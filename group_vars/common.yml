@@ -1,7 +1,4 @@
-# --------------------
-# Global Vault config
-# --------------------
-
+vault_env: dev
 vault_version: "1.15.5+ent"
 vault_user: "vault"
 
@@ -16,31 +13,14 @@ vault_api_port: 8200
 vault_storage_backend: "raft"
 
 vault_ui: true
-
-# --------------------
-# Security baseline
-# --------------------
-
-vault_disable_mlock: false
 vault_log_level: "info"
-
-# --------------------
-# TLS baseline
-# --------------------
 
 vault_tls_enabled: true
 vault_tls_require_and_verify_client_cert: false
 
-# --------------------
-# Telemetry (future)
-# --------------------
 
 vault_enable_telemetry: true
-vault_telemetry_prometheus: true
-
-# --------------------
-# Enterprise placeholders
-# --------------------
+# vault_telemetry_prometheus: true
 
 vault_enterprise: true
 vault_license_path: "/etc/vault.d/license.hclic"

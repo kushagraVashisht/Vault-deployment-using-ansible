@@ -1,0 +1,44 @@
+ui = {{ vault_ui | default(true) }}
+log_level = "{{ vault_log_level | default('info') }}"
+
+listener "tcp" {
+  address       = "0.0.0.0:{{ vault_api_port }}"
+  tls_cert_file = "{{ vault_tls_dir }}/vault.pem"
+  tls_key_file  = "{{ vault_tls_dir }}/vault.key"
+  tls_client_ca_file = "{{ vault_tls_dir }}/ca.pem"
+  tls_require_and_verify_client_cert = {{ vault_tls_require_and_verify_client_cert | default(false) }}
+}
+
+storage "raft" {
+  path    = "{{ vault_data_dir }}"
+  node_id = "{{ inventory_hostname }}"
+
+  {% for node in groups[group_names[0]] %}
+  retry_join {
+    leader_api_addr = "https://{{ node }}:{{ vault_api_port }}"
+  }
+  {% endfor %}
+}
+
+api_addr     = "https://{{ ansible_fqdn }}:{{ vault_api_port }}"
+cluster_addr = "https://{{ ansible_fqdn }}:{{ vault_cluster_port }}"
+
+{% if vault_enterprise %}
+license_path = "{{ vault_license_path }}"
+{% if vault_enable_perf_replication %}
+performance_replication {
+  enabled = true
+}
+{% endif %}
+{% if vault_enable_dr_replication %}
+dr_replication {
+  enabled = true
+}
+{% endif %}
+{% endif %}
+
+{% if vault_enable_telemetry %}
+telemetry {
+  prometheus_retention_time = "24h"
+}
+{% endif %}

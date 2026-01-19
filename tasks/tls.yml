@@ -1,0 +1,25 @@
+- name: Deploy Vault CA
+  copy:
+    src: ca.pem
+    dest: "{{ vault_tls_dir }}/ca.pem"
+    owner: "{{ vault_user }}"
+    group: "{{ vault_user }}"
+    mode: '0644'
+
+- name: Deploy Vault TLS certificate
+  copy:
+    content: "{{ vault_tls_cert }}"
+    dest: "{{ vault_tls_dir }}/vault.pem"
+    owner: "{{ vault_user }}"
+    group: "{{ vault_user }}"
+    mode: '0640'
+    no_log: true
+
+- name: Deploy Vault private key
+  copy:
+    content: "{{ vault_tls_key }}"
+    dest: "{{ vault_tls_dir }}/vault.key"
+    owner: "{{ vault_user }}"
+    group: "{{ vault_user }}"
+    mode: '0600'
+    no_log: true
