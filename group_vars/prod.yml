@@ -1,0 +1,5 @@
+vault_log_level: "warn"
+vault_raft_cluster_size: 3
+vault_tls_require_and_verify_client_cert: true
+vault_enable_perf_replication: true
+vault_enable_dr_replication: true

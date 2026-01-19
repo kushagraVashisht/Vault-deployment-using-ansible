@@ -1,0 +1,20 @@
+[Unit]
+Description=HashiCorp Vault ansible deployment poc
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User={{ vault_user }}
+Group={{ vault_user }}
+RuntimeDirectory=vault
+ExecStart=/usr/local/bin/vault server -config={{ vault_config_dir }}/vault.hcl
+ExecReload=/bin/kill --signal HUP $MAINPID
+Restart=on-failure
+LimitNOFILE=65536
+# Optional: limit core dumps for security
+LimitCORE=0
+# Environment variables (optional)
+Environment="VAULT_ADDR=https://127.0.0.1:{{ vault_api_port }}"
+
+[Install]
+WantedBy=multi-user.target

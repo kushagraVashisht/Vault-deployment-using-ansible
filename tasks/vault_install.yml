@@ -1,0 +1,21 @@
+- name: Download Vault zip
+  get_url:
+    url: "https://releases.hashicorp.com/vault/{{ vault_version }}/vault_{{ vault_version }}_linux_amd64.zip"
+    dest: /tmp/vault.zip
+    mode: '0644'
+    checksum: "sha256:{{ vault_zip_checksum | default('') }}"  # optional pinning
+
+- name: Unzip Vault binary to bin path
+  unarchive:
+    src: /tmp/vault.zip
+    dest: "/usr/local/bin"
+    remote_src: true
+    mode: '0755'
+
+- name: Check vault version
+  command: vault version
+  register: vault_version_out
+  changed_when: false
+
+- debug:
+    msg: "Vault installed: {{ vault_version_out.stdout }}"

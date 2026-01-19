@@ -1,0 +1,12 @@
+# Can add any tests here. Currently checks for OS family and distribution version only. Can add more checks in the future to check if the environment variables are defined, the cluster number meets the minimum quorum number etc. 
+
+- name: Fail if OS family not supported
+  fail:
+    msg: "Unsupported OS {{ ansible_distribution }} {{ ansible_distribution_version }}"
+  when: ansible_os_family not in ["RedHat", "Debian"]
+
+- name: Fail if architecture not x86_64
+  fail:
+    msg: "Vault only supported on x86_64 in this build"
+  when: ansible_architecture != "x86_64"
+

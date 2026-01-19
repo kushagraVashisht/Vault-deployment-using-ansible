@@ -1,0 +1,4 @@
+vault_log_level: "info"
+vault_raft_cluster_size: 3
+vault_enable_perf_replication: false
+vault_enable_dr_replication: false

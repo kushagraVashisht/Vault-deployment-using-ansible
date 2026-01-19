@@ -1,0 +1,46 @@
+
+# Create vault user, vault group, vault directories, log and runtime directories 
+- name: Create vault group
+  group:
+    name: "{{ vault_user }}"
+    system: true
+
+- name: Create vault user
+  user:
+    name: "{{ vault_user }}"
+    group: "{{ vault_user }}"
+    system: true
+    shell: /sbin/nologin
+    home: "{{ vault_config_dir }}"
+    create_home: false
+    comment: "HashiCorp Vault service account"
+
+- name: Create Vault directories
+  file:
+    path: "{{ item.path }}"
+    state: directory
+    owner: "{{ vault_user }}"
+    group: "{{ vault_user }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - { path: "{{ vault_config_dir }}", mode: "0750" }
+    - { path: "{{ vault_data_dir }}",   mode: "0750" }
+    - { path: "{{ vault_tls_dir }}",    mode: "0750" }
+    - { path: "/opt/vault/bin",         mode: "0755" }
+
+- name: Create Vault log directory
+  file:
+    path: /var/log/vault
+    state: directory
+    owner: "{{ vault_user }}"
+    group: "{{ vault_user }}"
+    mode: "0750"
+
+# Optional if you are going to stick with the traditional systemd directories
+- name: Create runtime directory
+  file:
+    path: /run/vault
+    state: directory
+    owner: "{{ vault_user }}"
+    group: "{{ vault_user }}"
+    mode: "0755"

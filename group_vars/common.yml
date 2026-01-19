@@ -1,0 +1,48 @@
+# --------------------
+# Global Vault config
+# --------------------
+
+vault_version: "1.15.5+ent"
+vault_user: "vault"
+
+vault_bin_path: "/usr/local/bin/vault"
+vault_config_dir: "/etc/vault.d"
+vault_data_dir: "/opt/vault/data"
+vault_tls_dir: "/opt/vault/tls"
+
+vault_cluster_port: 8201
+vault_api_port: 8200
+
+vault_storage_backend: "raft"
+
+vault_ui: true
+
+# --------------------
+# Security baseline
+# --------------------
+
+vault_disable_mlock: false
+vault_log_level: "info"
+
+# --------------------
+# TLS baseline
+# --------------------
+
+vault_tls_enabled: true
+vault_tls_require_and_verify_client_cert: false
+
+# --------------------
+# Telemetry (future)
+# --------------------
+
+vault_enable_telemetry: true
+vault_telemetry_prometheus: true
+
+# --------------------
+# Enterprise placeholders
+# --------------------
+
+vault_enterprise: true
+vault_license_path: "/etc/vault.d/license.hclic"
+vault_enable_perf_replication: false
+vault_enable_dr_replication: false

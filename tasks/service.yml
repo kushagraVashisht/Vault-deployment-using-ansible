@@ -1,0 +1,23 @@
+- name: Ensure runtime directory exists
+  file:
+    path: /run/vault
+    state: directory
+    owner: "{{ vault_user }}"
+    group: "{{ vault_user }}"
+    mode: '0755'
+
+- name: Deploy Vault systemd unit
+  template:
+    src: ../templates/vault.service.j2
+    dest: /etc/systemd/system/vault.service
+    owner: root
+    group: root
+    mode: '0644'
+  notify: reload systemd
+
+- name: Enable and start Vault service
+  systemd:
+    name: vault
+    enabled: yes
+    state: started
+    daemon_reload: yes
